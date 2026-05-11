@@ -1,0 +1,21 @@
+---
+- hosts: appserver
+  become: yes
+
+  tasks:
+
+    - name: Pull latest Docker image
+      shell: docker pull djroy45/shop:latest
+
+    - name: Stop existing container
+      shell: docker stop shop-container || true
+
+    - name: Remove existing container
+      shell: docker rm shop-container || true
+
+    - name: Run Docker container
+      shell: |
+        docker run -d \
+        --name shop-container \
+        -p 8070:8070 \
+        djroy45/shop:latest
